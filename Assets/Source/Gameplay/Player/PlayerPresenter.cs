@@ -1,11 +1,12 @@
 ﻿using System;
+using Source.Extentions;
 using Source.Gameplay.Character;
 using UnityEngine;
 
 namespace Source.Gameplay.Player
 {
     [RequireComponent(typeof(PlayerControls))]
-    public class PlayerPresenter : MonoBehaviour
+    public class PlayerPresenter : Transformable
     {
         [SerializeField] private GameObject _playerCameraPrefab;
         
@@ -17,7 +18,7 @@ namespace Source.Gameplay.Player
         public void Init(CharacterComposition character)
         {
             _character = character;
-            Camera = Instantiate(_playerCameraPrefab, character.Transform).GetComponent<PlayerCamera>();
+            Camera = Instantiate(_playerCameraPrefab, Transform.position, Quaternion.identity).GetComponent<PlayerCamera>();
             Camera.Init(character.Transform);
         }
 
@@ -28,7 +29,7 @@ namespace Source.Gameplay.Player
 
         private void FixedUpdate()
         {
-            _character.Movement.Move(Controls.Movement, Time.fixedDeltaTime);
+            _character.Movement.Move(Controls.Movement, Camera.Transform, Time.fixedDeltaTime);
         }
 
         private void Update()

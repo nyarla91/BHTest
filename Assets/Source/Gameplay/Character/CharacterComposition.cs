@@ -26,7 +26,6 @@ namespace Source.Gameplay.Character
             if ( ! isLocalPlayer)
                 return;
             PlayerPresenter presenter = Instantiate(_playerPrefab, Transform).GetComponent<PlayerPresenter>();
-            print(presenter);
             presenter.Init(this);
         }
     }

@@ -194,7 +194,8 @@ GameObject:
   - component: {fileID: -792662766522029911}
   - component: {fileID: 5785723803676244072}
   - component: {fileID: -6949191919563791053}
-  - component: {fileID: 1724281401442618681}
+  - component: {fileID: 7490450171174643608}
+  - component: {fileID: 8424739968806689834}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -268,7 +269,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  _maxSpeed: 1
+  _maxSpeed: 3
   _maxAccelerationTime: 0.2
 --- !u!114 &-6949191919563791053
 MonoBehaviour:
@@ -286,7 +287,23 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   _playerPrefab: {fileID: 498516241886040657, guid: 1f7b073ae8fe76e4fa594a52a3a08336, type: 3}
---- !u!114 &1724281401442618681
+--- !u!114 &7490450171174643608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9072464554886533774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 345a6758651f41328b608942bf9ad0c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  _rotationSpeed: 720
+--- !u!114 &8424739968806689834
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
