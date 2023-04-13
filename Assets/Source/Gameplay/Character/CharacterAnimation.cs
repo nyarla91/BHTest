@@ -8,6 +8,7 @@ namespace Source.Gameplay.Character
     public class CharacterAnimation : NetworkTransformable
     {
         [Tooltip("Degrees per second")] [SerializeField] private float _rotationSpeed;
+        [Tooltip("Minimum movement to rotate towards to")] [SerializeField] private float _rotationSensitivity;
         
         private CharacterMovement Movement { get; set; }
 
@@ -18,15 +19,15 @@ namespace Source.Gameplay.Character
 
         private void Update()
         {
-            RotateTowards(Movement.Velocity.normalized);
+            RotateTowards(Movement.Velocity.WithY(0));
         }
 
         private void RotateTowards(Vector3 forward)
         {
-            if (forward.Equals(Vector3.zero))
+            if ( ! isLocalPlayer || forward.magnitude < _rotationSensitivity)
                 return;
             
-            float maxRadiansDelta = _rotationSpeed * Mathf.Deg2Rad;
+            float maxRadiansDelta = _rotationSpeed * Time.deltaTime * Mathf.Deg2Rad;
             Vector3 lookDirection = Vector3.RotateTowards(Transform.forward, forward, maxRadiansDelta, Single.MaxValue);
             Transform.localRotation = Quaternion.LookRotation(lookDirection, Vector3.up);
         }

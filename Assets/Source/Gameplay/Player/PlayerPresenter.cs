@@ -1,5 +1,4 @@
-﻿using System;
-using Source.Extentions;
+﻿using Source.Extentions;
 using Source.Gameplay.Character;
 using UnityEngine;
 
@@ -18,18 +17,20 @@ namespace Source.Gameplay.Player
         public void Init(CharacterComposition character)
         {
             _character = character;
+            
             Camera = Instantiate(_playerCameraPrefab, Transform.position, Quaternion.identity).GetComponent<PlayerCamera>();
             Camera.Init(character.Transform);
-        }
 
-        private void Awake()
-        {
+            _character.Movement.CameraOrientation = Camera.Transform;
+            
             Controls = GetComponent<PlayerControls>();
+            Controls.JumpPressed += _character.Movement.Jump;
+            Controls.ChargePressed += _character.Movement.Charge;
         }
 
         private void FixedUpdate()
         {
-            _character.Movement.Move(Controls.Movement, Camera.Transform, Time.fixedDeltaTime);
+            _character.Movement.UpdatePlayerData(Controls.Movement);
         }
 
         private void Update()

@@ -80,7 +80,7 @@ MonoBehaviour:
   _origin: {fileID: 7019971809712341220}
   _camera: {fileID: 2533135526125125268}
   _maxDistance: 5
-  _verticalAmplitude: 60
+  _verticalAmplitude: 80.1
   _mouseSensitivity: 1
 --- !u!1 &5705393670791662258
 GameObject:

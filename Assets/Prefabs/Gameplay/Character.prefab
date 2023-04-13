@@ -269,8 +269,14 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  _maxSpeed: 3
+  _maxSpeed: 8
   _maxAccelerationTime: 0.2
+  _jumpForce: 10
+  _gravity: 20
+  _chargeSensitivity: 0.091
+  _chargeDelay: 0.6
+  _chargeDistance: 15
+  _chargeDuration: 0.3
 --- !u!114 &-6949191919563791053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,7 +308,8 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  _rotationSpeed: 720
+  _rotationSpeed: 1000
+  _rotationSensitivity: 0.01
 --- !u!114 &8424739968806689834
 MonoBehaviour:
   m_ObjectHideFlags: 0
