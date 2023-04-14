@@ -24,7 +24,8 @@ namespace Source.Gameplay.Character
         private CharacterController _controller;
         private Coroutine _chargeCoroutine;
 
-        private bool IsCharging => _chargeCoroutine != null;
+        public bool IsCharging => _chargeCoroutine != null;
+        public bool IsGrounded => _controller.isGrounded;
         
         private Vector3 WorldMoveInput { get; set; }
 
@@ -70,7 +71,7 @@ namespace Source.Gameplay.Character
         [Command]
         public void CmdJump()
         {
-            if (_controller.isGrounded) 
+            if (IsGrounded) 
                 Velocity = Velocity.WithY(_jumpForce);
         }
 
@@ -84,7 +85,7 @@ namespace Source.Gameplay.Character
             Velocity = Vector3.MoveTowards(Velocity.WithY(0), targetVelocty, maxVelocityDelta).WithY(Velocity.y);
 
             float ySpeed = Velocity.y;
-            if (_controller.isGrounded && Velocity.y < 0)
+            if (IsGrounded && Velocity.y < 0)
                 ySpeed = 0;
             ySpeed -= _gravity * Time.fixedDeltaTime;
             Velocity = Velocity.WithY(ySpeed);
