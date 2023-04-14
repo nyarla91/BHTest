@@ -20,17 +20,15 @@ namespace Source.Gameplay.Player
             
             Camera = Instantiate(_playerCameraPrefab, Transform.position, Quaternion.identity).GetComponent<PlayerCamera>();
             Camera.Init(character.Transform);
-
-            _character.Movement.CameraOrientation = Camera.Transform;
             
             Controls = GetComponent<PlayerControls>();
-            Controls.JumpPressed += _character.Movement.Jump;
-            Controls.ChargePressed += _character.Movement.Charge;
+            Controls.JumpPressed += _character.Movement.CmdJump;
+            Controls.ChargePressed += _character.Movement.CmdCharge;
         }
 
         private void FixedUpdate()
         {
-            _character.Movement.UpdatePlayerData(Controls.Movement);
+            _character.Movement.CmdSetWorldMoveInput(Camera.MoveInputToWorld(Controls.Movement));
         }
 
         private void Update()

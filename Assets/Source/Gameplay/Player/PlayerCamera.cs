@@ -19,6 +19,9 @@ namespace Source.Gameplay.Player
             _target = target;
         }
 
+        public Vector3 MoveInputToWorld(Vector2 moveInput)
+            => Transform.forward.WithY(0).normalized * moveInput.y + Transform.right * moveInput.x;
+
         public void Rotate(Vector2 inputDelta)
         {
             inputDelta *= _mouseSensitivity;

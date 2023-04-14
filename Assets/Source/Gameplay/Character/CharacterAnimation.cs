@@ -17,17 +17,17 @@ namespace Source.Gameplay.Character
             Movement = GetComponent<CharacterMovement>();
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
-            RotateTowards(Movement.Velocity.WithY(0));
+            RotateTowards(Movement.Velocity.WithY(0), Time.fixedDeltaTime);
         }
 
-        private void RotateTowards(Vector3 forward)
+        private void RotateTowards(Vector3 forward, float deltaTime)
         {
-            if ( ! isLocalPlayer || forward.magnitude < _rotationSensitivity)
+            if ( ! isServer || forward.magnitude < _rotationSensitivity)
                 return;
             
-            float maxRadiansDelta = _rotationSpeed * Time.deltaTime * Mathf.Deg2Rad;
+            float maxRadiansDelta = _rotationSpeed * deltaTime * Mathf.Deg2Rad;
             Vector3 lookDirection = Vector3.RotateTowards(Transform.forward, forward, maxRadiansDelta, Single.MaxValue);
             Transform.localRotation = Quaternion.LookRotation(lookDirection, Vector3.up);
         }

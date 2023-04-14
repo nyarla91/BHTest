@@ -2,7 +2,6 @@
 using System.Collections;
 using Mirror;
 using Source.Extentions;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Source.Gameplay.Character
@@ -22,45 +21,26 @@ namespace Source.Gameplay.Character
         [SerializeField] private float _chargeDuration;
 
         private CharacterController _controller;
-        private Transform _cameraOrientation;
         private Coroutine _chargeCoroutine;
-        private Vector2 _moveInput;
 
         private bool IsCharging => _chargeCoroutine != null;
         
-        private Vector3 WorldMoveInput
-        {
-            get
-            {
-                Vector3 forward = CameraOrientation.forward.WithY(0).normalized;
-                Vector3 right = CameraOrientation.right;
-                return forward * _moveInput.y + right * _moveInput.x;
-            }
-        }
-
-        public Transform CameraOrientation
-        {
-            get => _cameraOrientation;
-            set
-            {
-                if (_cameraOrientation != null)
-                    throw new InvalidOperatorException("CharacterMovement.Camera can only be set once", typeof(Transform));
-                _cameraOrientation = value;
-            }
-        }
+        private Vector3 WorldMoveInput { get; set; }
 
         public Vector3 Velocity { get; private set; }
 
-        public void UpdatePlayerData(Vector2 moveInput)
+        public event Action<Collider> HitWithCharge;
+
+        [Command]
+        public void CmdSetWorldMoveInput(Vector3 worldMoveInput)
         {
-            if ( ! isLocalPlayer)
-                return;
-            _moveInput = moveInput;
+            WorldMoveInput = Vector3.ClampMagnitude(worldMoveInput.WithY(0), 1);
         }
 
-        public void Charge()
+        [Command]
+        public void CmdCharge()
         {
-            if (IsCharging || ! isLocalPlayer || WorldMoveInput.magnitude < _chargeSensitivity)
+            if (IsCharging || WorldMoveInput.magnitude < _chargeSensitivity)
                 return;
             _chargeCoroutine = StartCoroutine(Charging());
         }
@@ -77,33 +57,36 @@ namespace Source.Gameplay.Character
             _chargeCoroutine = null;
         }
 
-        private void InterruptCharge()
+        private bool TryInterruptCharge()
         {
             if ( ! IsCharging || ! isLocalPlayer)
-                return;
+                return false;
             StopCoroutine(_chargeCoroutine);
             _chargeCoroutine = null;
+            return true;
         }
 
-        public void Jump()
+        [Command]
+        public void CmdJump()
         {
-            if ( ! isLocalPlayer)
-                return;
-
-            if (_controller.isGrounded)
+            if (_controller.isGrounded) 
                 Velocity = Velocity.WithY(_jumpForce);
         }
 
         private void Move()
         {
-            if ( ! isLocalPlayer || IsCharging)
+            if ( ! isServer || IsCharging)
                 return;
             
             Vector3 targetVelocty = WorldMoveInput * _maxSpeed;
             float maxVelocityDelta = _maxSpeed / _maxAccelerationTime * Time.fixedDeltaTime;
-            
             Velocity = Vector3.MoveTowards(Velocity.WithY(0), targetVelocty, maxVelocityDelta).WithY(Velocity.y);
-            Velocity = Velocity.WithY(Velocity.y - _gravity * Time.fixedDeltaTime);
+
+            float ySpeed = Velocity.y;
+            if (_controller.isGrounded && Velocity.y < 0)
+                ySpeed = 0;
+            ySpeed -= _gravity * Time.fixedDeltaTime;
+            Velocity = Velocity.WithY(ySpeed);
             
             _controller.Move(Velocity * Time.fixedDeltaTime);
         }
@@ -120,7 +103,10 @@ namespace Source.Gameplay.Character
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            InterruptCharge();
+            if (TryInterruptCharge())
+            {
+                HitWithCharge?.Invoke(hit.collider);
+            }
         }
     }
 }
