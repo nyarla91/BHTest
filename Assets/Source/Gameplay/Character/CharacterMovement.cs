@@ -16,6 +16,7 @@ namespace Source.Gameplay.Character
         [SerializeField] private float _gravity;
         [Space]
         [Tooltip("Minimum input magnitude to perform charge")] [Range(0, 1)] [SerializeField] private float _chargeSensitivity;
+        [SerializeField] [Range(0, 90)] private float _chargeStopMinAngle;
         [SerializeField] private float _chargeDelay;
         [SerializeField] private float _chargeDistance;
         [SerializeField] private float _chargeDuration;
@@ -59,7 +60,7 @@ namespace Source.Gameplay.Character
 
         private bool TryInterruptCharge()
         {
-            if ( ! IsCharging || ! isLocalPlayer)
+            if ( ! IsCharging || ! isServer)
                 return false;
             StopCoroutine(_chargeCoroutine);
             _chargeCoroutine = null;
@@ -100,13 +101,14 @@ namespace Source.Gameplay.Character
         {
             Move();
         }
-
+        
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
+            if (Vector3.Angle(hit.normal, Vector3.up) < _chargeStopMinAngle)
+                return;
+            
             if (TryInterruptCharge())
-            {
                 HitWithCharge?.Invoke(hit.collider);
-            }
         }
     }
 }
