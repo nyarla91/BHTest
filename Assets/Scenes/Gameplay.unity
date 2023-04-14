@@ -1613,7 +1613,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  _scoreToWin: 1
+  _scoreToWin: 3
   _restartTime: 5
 --- !u!4 &1679891107
 Transform:
