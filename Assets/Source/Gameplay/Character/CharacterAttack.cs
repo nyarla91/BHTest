@@ -14,6 +14,14 @@ namespace Source.Gameplay.Character
 
         public int SuccesfulHits => _succesfulHits;
 
+        public event Action<CharacterAttack, int> SuccesfulHitsUpdated;
+
+        public void Restart()
+        {
+            _succesfulHits = 0;
+            SuccesfulHitsUpdated?.Invoke(this, _succesfulHits);
+        }
+
         private void Awake()
         {
             Movement = GetComponent<CharacterMovement>();
@@ -25,6 +33,7 @@ namespace Source.Gameplay.Character
             if ( ! isServer || ! hit.TryGetComponent(out CharacterLife victim) || ! victim.TryHit())
                 return;
             _succesfulHits++;
+            SuccesfulHitsUpdated?.Invoke(this, _succesfulHits);
         }
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Source.Gameplay.Character
 {
     [RequireComponent(typeof(CharacterController))]
-    public class CharacterMovement : NetworkBehaviour
+    public class CharacterMovement : NetworkTransformable
     {
         [SerializeField] private float _maxSpeed;
         [SerializeField] private float _maxAccelerationTime;
@@ -33,6 +33,13 @@ namespace Source.Gameplay.Character
 
         public event Action<Collider> HitWithCharge;
 
+        public void Restart()
+        {
+            _controller.enabled = false;
+            Transform.position = NetworkManager.Singleton.GetStartPosition().position;
+            _controller.enabled = true;
+        }
+        
         [Command]
         public void CmdSetWorldMoveInput(Vector3 worldMoveInput)
         {
