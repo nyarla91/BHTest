@@ -1,9 +1,8 @@
-﻿using Mirror;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Source
 {
-    public class CursorState : NetworkBehaviour
+    public class CursorState : MonoBehaviour
     {
         private void Start()
         {

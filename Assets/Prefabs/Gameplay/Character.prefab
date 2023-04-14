@@ -355,6 +355,9 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   _animator: {fileID: 3387186135270525043}
+  _immuneMaterial: {fileID: 2100000, guid: 95db201376b8d4f4b80b2177516f6f9c, type: 2}
+  _vulnerableMaterial: {fileID: 2100000, guid: c8f858199460a954286421cf08dbb624, type: 2}
+  _renderer: {fileID: 7777676743840058791}
   _rotationSpeed: 1000
   _rotationSensitivity: 0.01
 --- !u!114 &8027181584143642306
@@ -471,6 +474,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
+    - target: {fileID: 6148737315974723067, guid: b3947f5722a97a246b0668e013df3073, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c8f858199460a954286421cf08dbb624, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3947f5722a97a246b0668e013df3073, type: 3}
 --- !u!1 &3637226355339740429 stripped
@@ -502,5 +509,10 @@ Animator:
 --- !u!4 &4121311211042545591 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b3947f5722a97a246b0668e013df3073, type: 3}
+  m_PrefabInstance: {fileID: 4520329558091364444}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &7777676743840058791 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6148737315974723067, guid: b3947f5722a97a246b0668e013df3073, type: 3}
   m_PrefabInstance: {fileID: 4520329558091364444}
   m_PrefabAsset: {fileID: 0}

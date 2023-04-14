@@ -8,8 +8,8 @@ namespace Source.Gameplay.Character
         [SerializeField] private float _damageImmunityTime;
 
         private float _immunityTimeLeft;
-        
-        private bool Immune => _immunityTimeLeft > 0;
+
+        public bool Immune => _immunityTimeLeft > 0;
 
         public bool TryHit()
         {
